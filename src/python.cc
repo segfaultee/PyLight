@@ -26,7 +26,7 @@ namespace python
         if (py_path == NULL)
             return Result<void*>::failure(std::format("Failed to convert path to Python string: {}", path));
         
-        bool res = PyList_Insert(sys_path, 0, py_path) != 0;
+        bool res = PyList_Insert(sys_path, 0, py_path) == 0;
         Py_DECREF(py_path);
 
         if (!res)
