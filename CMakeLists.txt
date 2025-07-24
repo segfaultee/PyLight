@@ -15,6 +15,8 @@ find_package(Python3 COMPONENTS Interpreter Development.Module REQUIRED)
 add_library(
     ${PROJECT_NAME}
 
+    ${SRC_DIR}/module/module.cc
+    
     ${SRC_DIR}/python.cc
 )
 
