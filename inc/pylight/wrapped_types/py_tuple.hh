@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 #include <Python.h>
 
 #include "pylight/result.hh"
@@ -9,24 +11,35 @@
 namespace python
 {
     template<typename... Args>
-    PyObject* pack_tuple(Args&&... args) 
+    PyObject* pack_tuple(Args&&... args)
     {
         constexpr size_t arg_count = sizeof...(Args);
         PyObject* tuple = PyTuple_New(arg_count);
-
-        if (!tuple) 
+        if (tuple == nullptr)
             return nullptr;
 
-        PyObject* items[arg_count] = { to_python(std::forward<Args>(args))... };
-
-        for (size_t i = 0; i < arg_count; ++i) 
+        size_t i = 0;
+        auto process_arg = [&](auto&& arg) -> bool 
         {
-            if (!items[i]) 
+            PyObject* obj = to_python(std::forward<decltype(arg)>(arg));
+            if (obj == nullptr)
+                return false;
+
+            if (PyTuple_SetItem(tuple, i++, obj) != 0) 
             {
-                Py_DECREF(tuple);
-                return nullptr;
+                Py_DECREF(obj);
+                return false;
             }
-            PyTuple_SET_ITEM(tuple, i, items[i]);
+
+            return true;
+        };
+
+        bool success = (process_arg(std::forward<Args>(args))&&...);
+
+        if (!success)
+        {
+            Py_DECREF(tuple);
+            return nullptr;
         }
 
         return tuple;
