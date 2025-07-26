@@ -1,9 +1,8 @@
 #pragma once
 
 #include <string>
-#include <stdexcept>
-#include <utility>
-#include <format>
+#include <optional>
+#include <tuple>
 
 namespace python
 {
@@ -31,7 +30,7 @@ namespace python
             bool is_success() const { return !_error; }
             bool is_error() const { return _error; }
             
-            T get() { return std::move(value); }
+            std::tuple<std::optional<T>, bool> get() { return std::make_tuple(is_success() ? value : std::nullopt, is_success()); }
             const std::string& error_message() const { return err_msg; }
         private:
             T value;
