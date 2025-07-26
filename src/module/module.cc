@@ -19,6 +19,7 @@ namespace python
 
         Py_DECREF(py_path);
 
+        mod.py_module = py_module;
         return Result<Module>::success(mod);
     }
 
