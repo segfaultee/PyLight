@@ -1,3 +1,5 @@
+#include <format>
+
 #include <pylight/module/module.hh>
 #include <pylight/utils.hh>
 
@@ -32,5 +34,29 @@ namespace python
         py_module = new_ref;
         
         return Result<void*>::success(nullptr);
+    }
+
+    Result<PyObject*> Module::call(const char* func, PyObject* owned_args)
+    {
+        PyObject* callable = PyObject_GetAttrString(py_module, func);
+        if (callable == NULL)
+        {
+            Py_XDECREF(owned_args);
+            return Result<PyObject*>::failure(std::format("Failed to get attribute {}", func));
+        }
+
+        if (!PyCallable_Check(callable))
+        {
+            Py_XDECREF(owned_args);
+            return Result<PyObject*>::failure(std::format("{} is not a callable", func));   
+        }
+
+        PyObject* ret_val = PyObject_CallObject(callable, owned_args);
+        Py_XDECREF(owned_args);
+
+        if (ret_val == NULL)
+            return Result<PyObject*>::failure(std::format("{} failed", func));
+            
+        return Result<PyObject*>::success(ret_val);
     }
 }

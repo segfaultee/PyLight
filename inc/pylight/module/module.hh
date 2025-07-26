@@ -7,6 +7,8 @@
 #include "pylight/result.hh"
 #include "pylight/utils.hh"
 
+#include "pylight/wrapped_types/py_tuple.hh"
+
 namespace python
 {
     class Module
@@ -16,6 +18,8 @@ namespace python
             static Result<Module> from_dotted(std::string dotted_path);
 
             Result<void*> reload();
+            
+            Result<PyObject*> call(const char* func, PyObject* owned_args);
         private:
             PyObject* py_module = nullptr;
     };
