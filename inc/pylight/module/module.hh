@@ -19,6 +19,8 @@ namespace python
 
             Result<void*> reload();
             
+            Result<void*> add_object(const char* name, PyObject* owned_obj);
+            
             Result<PyObject*> call(const char* func, PyObject* owned_args);
         private:
             PyObject* py_module = nullptr;

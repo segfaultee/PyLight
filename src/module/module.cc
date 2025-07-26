@@ -37,6 +37,13 @@ namespace python
         return Result<void*>::success(nullptr);
     }
 
+    Result<void*> Module::add_object(const char* name, PyObject* owned_obj)
+    {
+        if (PyModule_Add(py_module, name, owned_obj) != 0)
+            return Result<void*>::failure(std::format("Failed to add object to {}", name));
+        return Result<void*>::success(nullptr);
+    }
+
     Result<PyObject*> Module::call(const char* func, PyObject* owned_args)
     {
         PyObject* callable = PyObject_GetAttrString(py_module, func);
