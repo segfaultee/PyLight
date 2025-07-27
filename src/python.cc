@@ -17,7 +17,7 @@ namespace python
 
     Result<void*> insert_path(std::string path)
     {
-        PyObject* sys_path = PySys_GetObject("path");
+        PyObject* sys_path = PySys_GetObject("path"); // borrowed, we do not decref this
 
         if (sys_path == nullptr)
             return Result<void*>::failure("Failed to get `path` object from sys.");
@@ -26,7 +26,7 @@ namespace python
         if (py_path == nullptr)
             return Result<void*>::failure(std::format("Failed to convert path to Python string: {}", path));
         
-        bool res = PyList_Insert(sys_path, 0, py_path) == 0;
+        bool res = PyList_Insert(sys_path, 0, py_path) == 0; // py_path borrowed
         Py_DECREF(py_path);
 
         if (!res)
