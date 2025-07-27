@@ -18,10 +18,12 @@ namespace python
             static Result<Module> from_dotted(std::string dotted_path);
             static Result<Module> from_object(PyObject* owned_module_obj);
 
+            PyObject* get() const { return py_module; }
+
             Result<void*> reload();
-            
+
             Result<void*> add_object(const char* name, PyObject* owned_obj);
-            
+
             Result<PyObject*> call(const char* func, PyObject* owned_args);
         private:
             PyObject* py_module = nullptr;
