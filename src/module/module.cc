@@ -23,6 +23,13 @@ namespace python
         return Result<Module>::success(mod);
     }
 
+    Result<Module> Module::from_object(PyObject* owned_module_obj)
+    {
+        Module mod;
+        mod.py_module = owned_module_obj;
+        return Result<Module>::success(mod);
+    }
+
     Result<void*> Module::reload()
     {
         if (!py_module)

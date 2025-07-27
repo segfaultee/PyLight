@@ -16,6 +16,7 @@ namespace python
         public:
             static Result<Module> from_path(std::string path) { return Module::from_dotted(path_to_dotted(path)); }
             static Result<Module> from_dotted(std::string dotted_path);
+            static Result<Module> from_object(PyObject* owned_module_obj);
 
             Result<void*> reload();
             
