@@ -23,6 +23,7 @@ namespace python
             Result<void*> reload();
 
             Result<void*> add_object(const char* name, PyObject* owned_obj);
+            Result<void*> add_to_sys_modules(const char* name);
 
             Result<PyObject*> call(const char* func, PyObject* owned_args);
         private:

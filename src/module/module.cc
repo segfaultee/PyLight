@@ -51,6 +51,21 @@ namespace python
         return Result<void*>::success(nullptr);
     }
 
+    Result<void*> Module::add_to_sys_modules(const char* name)
+    {
+        PyObject* sys_modules = PyImport_GetModuleDict();
+        if (sys_modules == nullptr)
+            return Result<void*>::failure("Failed to get sys.modules");
+
+        if (PyDict_ContainsString(sys_modules, name))
+            return Result<void*>::success(nullptr);
+
+        if (PyDict_SetItemString(sys_modules, name, py_module) != 0)
+            return Result<void*>::failure(std::format("Failed to set {} in sys.modules dict", name));
+
+        return Result<void*>::success(nullptr);
+    }
+
     Result<PyObject*> Module::call(const char* func, PyObject* owned_args)
     {
         PyObject* callable = PyObject_GetAttrString(py_module, func);
