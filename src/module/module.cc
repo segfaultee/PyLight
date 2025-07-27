@@ -57,8 +57,10 @@ namespace python
         if (sys_modules == nullptr)
             return Result<void*>::failure("Failed to get sys.modules");
 
-        if (PyDict_ContainsString(sys_modules, name))
+        if (auto res = PyDict_ContainsString(sys_modules, name); res == 1)
             return Result<void*>::success(nullptr);
+        else if (res == -1)
+            return Result<void*>::failure("PyDict_ContainsString failed");
 
         if (PyDict_SetItemString(sys_modules, name, py_module) != 0)
             return Result<void*>::failure(std::format("Failed to set {} in sys.modules dict", name));
