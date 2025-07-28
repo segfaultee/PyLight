@@ -12,6 +12,8 @@ namespace python
         public:
             static Result<List> create(int size = 0);
 
+            PyObject* get() const { return py_list; }
+
             template<PythonConvertible T>
             Result<void*> append(T owned_value)
             {

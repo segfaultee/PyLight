@@ -12,6 +12,8 @@ namespace python
         public:
             static Result<Dict> create();
 
+            PyObject* get() const { return py_dict; }
+
             template<PythonConvertible T>
             Result<void*> set_item(const char* key, T owned_value)
             {
