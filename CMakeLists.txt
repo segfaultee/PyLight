@@ -17,6 +17,9 @@ add_library(
 
     ${SRC_DIR}/module/module.cc
     
+    ${SRC_DIR}/wrapped_types/py_dict.cc
+    ${SRC_DIR}/wrapped_types/py_list.cc
+
     ${SRC_DIR}/python.cc
 )
 
