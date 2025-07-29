@@ -9,14 +9,14 @@ namespace python
             return Result<List>::failure("Failed to create new python list object");
 
         List list;
-        list.py_list = py_list;
+        list.py_object = py_list;
 
         return Result<List>::success(list);
     }
 
     Result<void*> List::append(PyObject* owned_value)
     {
-        if (PyList_Append(py_list, owned_value) != 0)
+        if (PyList_Append(py_object, owned_value) != 0)
         {
             Py_DECREF(owned_value);
             return Result<void*>::failure("Failed to append value to py_list");

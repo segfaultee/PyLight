@@ -4,6 +4,8 @@
 
 #include "module/module.hh"
 
+#include "wrapped_types/py_dict.hh"
+#include "wrapped_types/py_list.hh"
 #include "wrapped_types/py_tuple.hh"
 
 #include "result.hh"

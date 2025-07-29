@@ -9,14 +9,14 @@ namespace python
             return Result<Dict>::failure("Failed to create new python dictionary object");
 
         Dict dict;
-        dict.py_dict = py_dict;
+        dict.py_object = py_dict;
 
         return Result<Dict>::success(dict);
     }
 
     Result<void*> Dict::set_item(const char* key, PyObject* owned_value)
     {
-        if (PyDict_SetItemString(py_dict, key, owned_value) != 0)
+        if (PyDict_SetItemString(py_object, key, owned_value) != 0)
         {
             Py_DECREF(owned_value);
             return Result<void*>::failure(std::format("Failed to set {}", key));

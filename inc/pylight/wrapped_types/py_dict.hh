@@ -5,14 +5,14 @@
 #include "pylight/wrapped_types/convert.hh"
 #include "pylight/result.hh"
 
+#include "py_object.hh"
+
 namespace python
 {
-    class Dict
+    class Dict: public Object<Dict>
     {
         public:
             static Result<Dict> create();
-
-            PyObject* get() const { return py_dict; }
 
             template<PythonConvertible T>
             Result<void*> set_item(const char* key, T owned_value)
@@ -24,7 +24,5 @@ namespace python
             }
 
             Result<void*> set_item(const char* key, PyObject* owned_value);
-        private:
-            PyObject* py_dict = nullptr;
     };
 }

@@ -5,14 +5,14 @@
 #include "pylight/wrapped_types/convert.hh"
 #include "pylight/result.hh"
 
+#include "py_object.hh"
+
 namespace python
 {
-    class List
+    class List: public Object<List>
     {
         public:
             static Result<List> create(int size = 0);
-
-            PyObject* get() const { return py_list; }
 
             template<PythonConvertible T>
             Result<void*> append(T owned_value)
@@ -24,7 +24,5 @@ namespace python
             }
 
             Result<void*> append(PyObject* owned_value);
-        private:
-            PyObject* py_list = nullptr;
     };
 }
