@@ -32,3 +32,5 @@ else()
     target_link_libraries(${PROJECT_NAME} PRIVATE ${Python3_LIBRARIES})
     target_include_directories(${PROJECT_NAME} PRIVATE ${Python3_INCLUDE_DIRS})
 endif()
+
+add_subdirectory(tests)
